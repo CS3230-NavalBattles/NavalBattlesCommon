@@ -90,6 +90,12 @@ public class Ship implements Serializable {
         return d;
     }
 
+    protected String getName()
+    {
+        String n = name;
+        return n;
+    }
+
     protected void changeDirection() {
         if (direction.equals(HORIZONTAL)) {
             direction = VERTICAL;

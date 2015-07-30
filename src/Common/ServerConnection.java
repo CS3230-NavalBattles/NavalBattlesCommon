@@ -31,37 +31,36 @@ public class ServerConnection implements Runnable
             out.flush();
             ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(connection.getInputStream()));
             while(!connection.isClosed() && connection.isConnected()) {
-                //TODO: Typecast input to NavalMessage object once Trevor builds class.
-                //incomingMessage;
+                Message incomingMessage;
                 try
                 {
-                    //incomingMessage = () in.readObject();
-                    //gameFramework.messageHandler(incomingMessage);
+                    incomingMessage = (Message) in.readObject();
+                    gameFramework.messageHandler(incomingMessage);
                 }catch (NullPointerException e)
                 {
-
-                }//catch (ClassNotFoundException e)
-                //{
-                    //TODO: Handle class not found exception
-                //}
+//                    TODO: NullPointerException
+                }catch (ClassNotFoundException e)
+                {
+//                    TODO: ClassNotFoundException
+                }
             }
 
         }catch (IOException e)
         {
-
+//            TODO: Failed connection
         }
 
     }
 
-    protected void sendMessage(/*Messageclass message*/)
+    protected void sendMessage(Message message)
     {
         try
         {
-            //out.writeObject(message);
+            out.writeObject(message);
             out.flush();
         }catch (IOException e)
         {
-
+//            TODO: Failed to write OUTPUT
         }
     }
 }

@@ -15,12 +15,49 @@ public class GameFramework
     {
         server = new ServerConnection(this, userid);
         //call your game client constructor
+        //startServer();
     }
 
     //Handle incoming messages
-    protected void messageHandler()
+    protected void messageHandler(Message message)
     {
-        //TODO: Message Logic once Message class is built by Trevor
+        if(message.getMessageType().equals(Message.Type.CHAT))
+        {
+            message = (ChatMessage) message;
+            //TODO: CHAT message
+            return;
+        }
+        if(message.getMessageType().equals(Message.Type.ACKNOWLEDGE) || message.getMessageType().equals(Message.Type.DENY))
+        {
+            message = (ResponseMessage) message;
+            //TODO: Response Message
+            return;
+        }
+        if(message.getMessageType().equals(Message.Type.TIMER))
+        {
+            message = (TimerMessage) message;
+            //TODO: Timer Message
+            return;
+        }
+        if(message.getMessageType().equals(Message.Type.START_GAME) || message.getMessageType().equals(Message.Type.END_GAME)
+                || message.getMessageType().equals(Message.Type.OBSERVE_GAME) ||message.getMessageType().equals(Message.Type.JOIN_GAME))
+        {
+            message = (StatusMessage) message;
+            //TODO: Status Message
+            return;
+        }
+        if(message.getMessageType().equals(Message.Type.GAME))
+        {
+            message = (GameMessage) message;
+            //TODO: Game Message
+            return;
+        }
+    }
+
+    //Send messages through ServerConnection.
+    protected void sendServerMessage(Message message)
+    {
+        server.sendMessage(message);
     }
 
     //start a thread for server connection
