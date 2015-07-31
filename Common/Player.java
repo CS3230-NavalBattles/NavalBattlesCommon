@@ -3,7 +3,7 @@ package Common;
 import java.util.ArrayList;
 
 /**
- * Created by Clinton on 7/21/2015.
+ * Joint class by Battleship group on 7/16/2015.
  *
  * Player class will be used to hold the gameboard for the player (server side) and to do basic battleship game functions
  * it will check to see if they hit a ship. will report of the ship has been sunk
@@ -33,7 +33,6 @@ public class Player extends User
 
     private void createShips()
     {
-
         ships.clear();
         for(int i = 0; i<5; i++)
         {
@@ -75,6 +74,7 @@ public class Player extends User
             if(!s.hasBeenSunk())
             {
                 allShipsSunk = false;
+                return;
             }
         }
     }

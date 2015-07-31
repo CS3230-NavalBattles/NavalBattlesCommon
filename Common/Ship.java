@@ -1,12 +1,12 @@
 package Common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by Clinton on 7/16/2015.
+ * Joint class by Battleship group on 7/16/2015.
  */
-public class Ship
-{
+public class Ship implements Serializable {
     private int size;
     private String direction;
     private int xcoordinate;
@@ -16,8 +16,7 @@ public class Ship
     public static final String HORIZONTAL = "HORIZONTAL";
     public static final String VERTICAL = "VERTICAL";
 
-    public Ship(int ssize, String label)
-    {
+    public Ship(int ssize, String label) {
         size = ssize;
         name = label;
         direction = VERTICAL;
@@ -26,101 +25,105 @@ public class Ship
         availhits = new ArrayList<int[]>();
     }
 
-    protected Boolean hitShip(int x, int y)
-    {
-        for(int[] i : availhits)
-        {
-            if(i[0] == x && i[1] == y)
-            {
+    protected Boolean hitShip(int x, int y) {
+        for (int[] i : availhits) {
+            if (i[0] == x && i[1] == y) {
+                availhits.remove(i);
                 return true;
             }
         }
         return false;
     }
 
-    protected void setLocation(int x, int y)
-    {
-        xcoordinate = x;
-        ycoordinate = y;
-        availhits.clear();
-        for (int i = 0; i<size; i++)
-        {
-            int[] loc = new int[2];
-            if (direction.equals(HORIZONTAL))
-            {
-                loc[0] = xcoordinate + i;
-                loc[1] = ycoordinate;
+    private boolean checkOutOfBound(int xcoord, int ycoord) {
+        if (direction == VERTICAL) {
+            if (ycoord >= 0 && ycoord < (10 - size)) {
+                return true;
             }
-            else
-            {
-                loc[0] = xcoordinate;
-                loc[1] = ycoordinate + i;
+        } else {
+            if (xcoord >= 0 && xcoord < (10 - size)) {
+                return true;
             }
-            availhits.add(loc);
         }
+        return false;
+    }
+
+    protected boolean setLocation(int x, int y) {
+        if (checkOutOfBound(x, y)) {
+            xcoordinate = x;
+            ycoordinate = y;
+            availhits.clear();
+            for (int i = 0; i < size; i++) {
+                int[] loc = new int[2];
+                if (direction.equals(HORIZONTAL)) {
+                    loc[0] = xcoordinate + i;
+                    loc[1] = ycoordinate;
+                } else {
+                    loc[0] = xcoordinate;
+                    loc[1] = ycoordinate + i;
+                }
+                availhits.add(loc);
+            }
+            return true;
+        }
+        return false;
     }
 
     //Accessor Methods
-    protected int getXcoordinate()
-    {
+    protected int getXcoordinate() {
         int x = xcoordinate;
         return x;
     }
 
-    protected int getYcoordinate()
-    {
+    protected int getYcoordinate() {
         int y = ycoordinate;
         return y;
     }
 
-    protected int getSize()
-    {
+    protected int getSize() {
         int s = size;
         return s;
     }
 
-    protected String getDirection()
-    {
+    protected String getDirection() {
         String d = direction;
         return d;
     }
 
-    protected void changeDirection()
+    protected String getName()
     {
-        if(direction.equals(HORIZONTAL))
-        {
+        String n = name;
+        return n;
+    }
+
+    protected void changeDirection() {
+        if (direction.equals(HORIZONTAL)) {
             direction = VERTICAL;
-        }
-        else
-        {
+        } else {
             direction = HORIZONTAL;
         }
     }
 
-    protected boolean hasBeenSunk()
-    {
-        if(availhits.size() > 0)
-        {
+    protected boolean hasBeenSunk() {
+        if (availhits.size() > 0) {
             return false;
         }
         return true;
     }
 
-//    These two methods will need to be changed.
-//    protected void addHit()
+    //test method
+//    public static void test()
 //    {
-//        if(hits < size)
-//        {
-//            hits++;
-//        }
+//        Ship s = new Ship(4,"Battleship");
+//        s.setLocation(3,3);
+//        System.out.println(s.availhits.toString());
+//        s.hitShip(3, 5);
+//        System.out.println(s.availhits.toString());
 //    }
 //
-//    protected boolean hasBeenSunk()
+//    public static void main(String[] args)
 //    {
-//        if (hits == size)
-//        {
-//            return true;
-//        }
-//        return false;
+//        test();
 //    }
+
 }
