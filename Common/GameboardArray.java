@@ -1,151 +1,156 @@
 package Common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
 
 /**
- * Joint class by Battleship group on 7/16/2015.
+ * Created by Clinton on 7/16/2015.
  */
 public class GameboardArray implements Serializable {
-    private int[][] gameBoard;
-    private int xsize = 10;
-    private int ysize = 10;
-
-    //class constants
-    public static final int HIT = 1;
-    public static final int MISS = 0;
-
-
-
+    private int[][] shipArray;
+    private int[][] publicboard;
+    private int total_row = 10;
+    private int total_col = 10;
+    public final int HIT = 1;
+    public final int MISS = -1;
+    private HashMap<String, Integer> shipType = new HashMap<String, Integer>()
+    {{
+	     put("Aircraft Carrier", 5);
+	     put("Battleship", 4);
+	     put("Destroyer", 3);
+	     put("Submarine", 3);
+	     put("Boat", 2);
+    }};
+    private HashMap<String, Boolean> isShipSet = new HashMap<String, Boolean>()
+    {{
+	     put("Aircraft Carrier", false);
+	     put("Battleship", false);
+	     put("Destroyer", false);
+	     put("Submarine", false);
+	     put("Boat", false);
+    }};
 
     public GameboardArray()
     {
-        gameBoard = new int[xsize][ysize];
-        //initializeBoard(); //are we going to initialize to a set value or work with null?
+        shipArray = new int[total_row][total_col];
+        publicboard = new int[total_row][total_col];
+        initializeBoard();
+    }
+    
+    public GameboardArray(ArrayList<Ship> addships)
+    {
+        //TODO: constructor
     }
     
     public void initializeBoard()
     {
-    	for(int row = 0; row < xsize; row++)
-    	{
-    		for(int col = 0; col < ysize; col++)
-    		{
-    			gameBoard[row][col] = 7;
+    	for(int row = 0; row < total_row; row++){
+    		for(int col = 0; col < total_col; col++){
+    			shipArray[row][col] = 0;
+    			publicboard[row][col] = 0;
     		}
+    	}    	
+    }
+    
+    public void resetIsSet(){
+    	for (String ship : isShipSet.keySet()){
+    		isShipSet.put(ship, false);
     	}
     }
     
-    public void printBoard()
+    public void addShips(String ship, int row, int col, String direction)
     {
-    	System.out.println("BATTLESHIP\n");
-    	for(int row = 0; row < xsize; row++)
-    	{
-    		for(int col = 0; col < ysize; col++)
-    		{
-    			System.out.print(" " + gameBoard[row][col] + " ");
-    		}
-    		System.out.println();
+    	if(!isShipSet.get(ship)){
+	    	if(direction.equals("Horizontal")){
+	    		addShipHorizontal(ship, row, col);
+	    	}
+	    	else{
+	    		addShipVertical(ship, row, col);
+	    	}
     	}
+    	else{
+    		JOptionPane.showMessageDialog(null, ship + " is already set");
+    	}
+    }
+    
+    public void addShipHorizontal(String ship, int row, int col)
+    {
+    	if(checkAddingShipHorizontal(ship, row, col)){
+	    	for(int i = 0; i < shipType.get(ship); i++){ 		
+				shipArray[row][col] = shipType.get(ship);
+				col++;	
+			}
+	    	isShipSet.put(ship, true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Error adding ship due to out of bound or overlapping another ship");
+    	}
+    }
+    
+    public void addShipVertical(String ship, int row, int col)
+    {
+    	if(checkAddingShipVertical(ship, row, col)){
+    		for(int i = 0; i < shipType.get(ship); i++){
+    			shipArray[row][col] = shipType.get(ship);
+    			row++;
+    		}
+    		isShipSet.put(ship, true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Error adding ship due to out of bound or overlapping another ship");
+    	}
+    }
+    
+    public boolean checkAddingShipHorizontal(String ship, int row, int col)
+    {	
+    	for(int i = 0; i < shipType.get(ship); i++){
+    		if((col >= 0 && col < total_col) && shipArray[row][col] == 0){			
+    			col++;
+    		}
+    		else{
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
-//    this can be all handled with the printBoard method.
-//    public void printPublicBoard()
-//    {
-//    	System.out.println("BATTLESHIP\n");
-//    	for(int row = 0; row < xsize; row++)
-//    	{
-//    		for(int col = 0; col < ysize; col++)
-//    		{
-//    			if(publicboard[row][col] != 7)
-//    			{
-//    				System.out.print(" " + publicboard[row][col] + " ");
-//    			}
-//    			else
-//    			{
-//    				System.out.print(" ~ ");
-//    			}
-//    		}
-//    		System.out.println();
-//    	}
-//    }
-    
-    public void addShips(int size, int xcoord, int ycoord, String direction)
-    {
-    	if(direction.equals("horizontal"))
-    	{
-    		addShipHorizontal(size, xcoord, ycoord);
-    	}
-    	else
-    	{
-    		addShipVertical(size, xcoord, ycoord);
-    	}
-    }
-    
-    public void addShipHorizontal(int size, int xcoord, int ycoord)
-    {
-    	for(int i = 0; i < size; i++)
-		{
-    		if(checkOutOfBound(xcoord, ycoord))
-    		{
-    			gameBoard[xcoord][ycoord] = size;
-    			ycoord++;
+	public boolean checkAddingShipVertical(String ship, int row, int col)
+	{	
+		for(int i = 0; i < shipType.get(ship); i++){
+			if((row >= 0 && row < total_row) && shipArray[row][col] == 0){			
+    			row++;
     		}
+    		else{
+    			return false;
+    		}		
 		}
-    }
-    
-    public void addShipVertical(int size, int xcoord, int ycoord)
-    {
-    	for(int i = 0; i < size; i++)
-		{
-    		if(checkOutOfBound(xcoord, ycoord))
-    		{
-    			gameBoard[xcoord][ycoord] = size;
-    			xcoord++;
-    		}
-		}
-    }
-    
-    public boolean checkOutOfBound(int xcoord, int ycoord)
-    {
-    	if(ycoord >= 0 && ycoord < ysize && xcoord >= 0 && xcoord < xsize )
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
-    	}
-    }
+		return true;
+	}
     
     //Accessor Methods
     public int[][] getPublicboard()
     {
-        int[][] viewableboard = gameBoard.clone();
-
+        int[][] viewableboard = publicboard;
         return viewableboard;
     }
+    
+    public int[][] getShipArray(){
+    	return shipArray;
+    }
+    
+    public void setShipArray(int[][] ships){
+    	shipArray = ships;
+    }
 
-	protected void addHit(int x, int y)
-	{
-		gameBoard[x][y] = HIT;
-	}
-
-	protected void addMiss(int x, int y)
-	{
-		gameBoard[x][y] = MISS;
-	}
-
-//	  Need to rethink the guessing portion for the gameboard.
-//    public void addGuess(int x, int y)
-//    {
-//        //TODO: addGuess
-//    	if(shipArray[x][y] != 0)
-//    	{
-//    		publicboard[x][y] = HIT;
-//    	}
-//    	else
-//    	{
-//    		publicboard[x][y] = MISS;
-//    	}
-//    }
+    public void addGuess(int row, int col)
+    {
+    	if(shipArray[row][col] > 0){
+    		publicboard[row][col] = HIT;
+    	}
+    	else{
+    		publicboard[row][col] = MISS;
+    	}
+    }
 }
-
