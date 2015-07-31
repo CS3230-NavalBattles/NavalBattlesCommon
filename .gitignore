@@ -4,4 +4,7 @@
 
 #Files to ignore
 /bin
-.gitignore
+.project
+.classpath
+README.md
+*.class
