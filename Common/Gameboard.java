@@ -90,9 +90,9 @@ public class Gameboard extends JPanel
         {
             for(int j = 0; j<10; j++)
             {
-                if(gameboard[i][j] == 0 || gameboard[i][j] == 1)
+                if(gameboard[i][j] == GameboardArray.HIT || gameboard[i][j] == GameboardArray.MISS)
                 {
-                    if (gameboard[i][j] == 0) {
+                    if (gameboard[i][j] == GameboardArray.MISS) {
                         g.setColor(Color.WHITE);
 
                     } else {
