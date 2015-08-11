@@ -25,19 +25,8 @@ public class Gameboard extends JPanel
         this.setOpaque(false);
         ships = new ArrayList<Ship>();
         gameboard = new int[10][10];
-        setdefaultvalue();
     }
 
-    private void setdefaultvalue()
-    {
-        for(int i = 0; i < 10; i++)
-        {
-            for(int j = 0; j < 10; j++)
-            {
-                gameboard[i][j] = 9;
-            }
-        }
-    }
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
@@ -185,55 +174,55 @@ public class Gameboard extends JPanel
     }
 
     //Test Method for class
-//    public static void main(String[] args)
-//    {
-//        Gameboard panel = new Gameboard();
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        frame.setSize(305, 305);
-//        frame.add(panel);
-//        frame.setVisible(true);
-//        GameboardArray test = new GameboardArray();
-//        test.addHit(1, 1);
-//        test.addMiss(3, 3);
-//        panel.updateGameboardArray(test.getGameboardArray());
-//        Ship one = new Ship(5,"Aircraft Carrier");
-//        one.setLocation(1, 1);
-//        Ship two = new Ship(4,"Battleship");
-//        two.setLocation(2, 2);
-//        Ship three = new Ship(3,"Cruiser");
-//        three.setLocation(3, 3);
-//        Ship four = new Ship(3,"Submarine");
-//        four.setLocation(4, 4);
-//        Ship five = new Ship(2,"Destroyer");
-//        five.setLocation(5, 5);
-//        panel.addShip(one);
-//        panel.addShip(two);
-//        panel.addShip(three);
-//        panel.addShip(four);
-//        panel.addShip(five);
-//        panel.updateUI();
-//        try {
-//            Thread.sleep(5000);
-//        }catch (InterruptedException e)
-//        {
-//
-//        }
-//        test = new GameboardArray();
-//        test.addMiss(0,0);
-//        test.addHit(3,3);
-//        panel.updateGameboardArray(test.getGameboardArray());
-//        one.changeDirection();
-//        two.changeDirection();
-//        three.changeDirection();
-//        four.changeDirection();
-//        five.changeDirection();
-//        panel.addShip(one);
-//        panel.addShip(two);
-//        panel.addShip(three);
-//        panel.addShip(four);
-//        panel.addShip(five);
-//        panel.repaint();
-//
-//    }
+    public static void main(String[] args)
+    {
+        Gameboard panel = new Gameboard();
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setSize(305, 305);
+        frame.add(panel);
+        frame.setVisible(true);
+        GameboardArray test = new GameboardArray();
+        test.addHit(1, 1);
+        test.addMiss(3, 3);
+        panel.updateGameboardArray(test.getGameboardArray());
+        Ship one = new Ship(5,"Aircraft Carrier");
+        one.setLocation(1, 1);
+        Ship two = new Ship(4,"Battleship");
+        two.setLocation(2, 2);
+        Ship three = new Ship(3,"Cruiser");
+        three.setLocation(3, 3);
+        Ship four = new Ship(3,"Submarine");
+        four.setLocation(4, 4);
+        Ship five = new Ship(2,"Destroyer");
+        five.setLocation(5, 5);
+        panel.addShip(one);
+        panel.addShip(two);
+        panel.addShip(three);
+        panel.addShip(four);
+        panel.addShip(five);
+        panel.updateUI();
+        try {
+            Thread.sleep(5000);
+        }catch (InterruptedException e)
+        {
+
+        }
+        test = new GameboardArray();
+        test.addMiss(0,0);
+        test.addHit(3,3);
+        panel.updateGameboardArray(test.getGameboardArray());
+        one.changeDirection();
+        two.changeDirection();
+        three.changeDirection();
+        four.changeDirection();
+        five.changeDirection();
+        panel.addShip(one);
+        panel.addShip(two);
+        panel.addShip(three);
+        panel.addShip(four);
+        panel.addShip(five);
+        panel.repaint();
+
+    }
 }
