@@ -15,12 +15,14 @@ public class Ship implements Serializable {
     private int ycoordinate;
     private ArrayList<int[]> availhits;
     private String name;
+    private boolean isset;
     public static final String HORIZONTAL = "HORIZONTAL";
     public static final String VERTICAL = "VERTICAL";
 
     public Ship(int ssize, String label) {
         size = ssize;
         name = label;
+        isset = false;
         direction = VERTICAL;
         xcoordinate = 0;
         ycoordinate = 0;
@@ -35,6 +37,25 @@ public class Ship implements Serializable {
             }
         }
         return false;
+    }
+
+    public boolean isSet()
+    {
+        return isset;
+    }
+
+    public void setShip()
+    {
+        isset = true;
+    }
+
+    public void resetShip()
+    {
+        isset = false;
+        xcoordinate = 0;
+        ycoordinate = 0;
+        direction = VERTICAL;
+        availhits.clear();
     }
 
     private boolean checkOutOfBound(int xcoord, int ycoord) {
