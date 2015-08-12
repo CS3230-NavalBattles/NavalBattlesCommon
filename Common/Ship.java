@@ -7,9 +7,9 @@ import java.util.ArrayList;
  * Joint class by Battleship group on 7/16/2015.
  */
 public class Ship implements Serializable {
-	private static final long serialVersionUID = 5358685165989124933L;
-	
-	private int size;
+    private static final long serialVersionUID = 5358685165989124933L;
+
+    private int size;
     private String direction;
     private int xcoordinate;
     private int ycoordinate;
@@ -29,7 +29,7 @@ public class Ship implements Serializable {
         availhits = new ArrayList<int[]>();
     }
 
-    protected Boolean hitShip(int x, int y) {
+    public Boolean hitShip(int x, int y) {
         for (int[] i : availhits) {
             if (i[0] == x && i[1] == y) {
                 availhits.remove(i);
@@ -59,24 +59,21 @@ public class Ship implements Serializable {
     }
 
     private boolean checkOutOfBound(int xcoord, int ycoord) {
-//    	return true;
         if (direction == VERTICAL) {
-            if (ycoord >= 0 && ycoord < (10 - size)) {
+            if (ycoord >= 0 && ycoord < 10 - (size - 1)) {
                 return true;
             }
         } else {
-            if (xcoord >= 0 && xcoord < (10 - size)) {
+            if (xcoord >= 0 && xcoord < 10 - (size -1)) {
                 return true;
             }
         }
         return false;
     }
 
-    /**
-     * Requires that the direction be set before using - otherwise the out of bounds
-     * check fails
-     */
-    protected boolean setLocation(int x, int y) {
+
+
+    public boolean setLocation(int x, int y) {
         if (checkOutOfBound(x, y)) {
             xcoordinate = x;
             ycoordinate = y;
@@ -98,33 +95,33 @@ public class Ship implements Serializable {
     }
 
     //Accessor Methods
-    protected int getXcoordinate() {
+    public int getXcoordinate() {
         int x = xcoordinate;
         return x;
     }
 
-    protected int getYcoordinate() {
+    public int getYcoordinate() {
         int y = ycoordinate;
         return y;
     }
 
-    protected int getSize() {
+    public int getSize() {
         int s = size;
         return s;
     }
 
-    protected String getDirection() {
+
+    public String getDirection() {
         String d = direction;
         return d;
     }
 
-    protected String getName()
+    public String getName()
     {
-        String n = name;
-        return n;
+        return name;
     }
 
-    protected void changeDirection() {
+    public void changeDirection() {
         if (direction.equals(HORIZONTAL)) {
             direction = VERTICAL;
         } else {
@@ -132,113 +129,114 @@ public class Ship implements Serializable {
         }
     }
 
-    protected boolean hasBeenSunk() {
+    public boolean hasBeenSunk() {
         if (availhits.size() > 0) {
             return false;
         }
         return true;
     }
 
-	public static boolean placeShips(Ship[] ships, boolean[][] board) {
-		if (board == null || board.length <= 0 || board[0].length <= 0) {
-			throw new IllegalStateException("No valid board found to place ships");
-		}
-		
-		for (Ship ship: ships) {
-			if (isValidPlacement(ship, board)) {
-				place(ship, board);
-			}
-			else {
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	public static boolean isValidPlacement(Ship ship, boolean[][] board) {
-		int size = ship.size;
-		String orientation = ship.direction;
-		
-		if (ship.xcoordinate < 0 || ship.ycoordinate < 0) {
-			return false;
-		}
-		else if (orientation.equals(HORIZONTAL) && ship.xcoordinate + size > board[0].length ||
-				orientation.equals(VERTICAL) && ship.ycoordinate + size > board.length) {
-			return false;
-		}
-		
-		while (size > 0) {
-			int column = ship.xcoordinate;
-			int row = ship.ycoordinate;
-			if (orientation.equals(VERTICAL)) {
-				row += ship.size - size;
-			}
-			else {
-				column += ship.size - size;
-			}
-			if (board[row][column]) {
-				return false;
-			}
-			
-			size--;
-		}
-		
-		return true;
-	}
-	
-	private static void place(Ship ship, boolean[][] board) {
-		int size = ship.size;
-		while (size > 0) {
-			int position = ship.size - size;
-			if (ship.direction.equals(VERTICAL)) {
-				board[ship.ycoordinate + position][ship.xcoordinate] = true;
-			}
-			else {
-				board[ship.ycoordinate][ship.xcoordinate + position] = true;
-			}
-			size--;
-		}
-	}
+    public static boolean placeShips(Ship[] ships, boolean[][] board) {
+        if (board == null || board.length <= 0 || board[0].length <= 0) {
+            throw new IllegalStateException("No valid board found to place ships");
+        }
 
-	@Override
-	public String toString() {
-		return name + ": " +
-				"Start position(" + xcoordinate + "," + ycoordinate + "), " +
-				"Size(" + size + "), " +
-				"Direction(" + direction + ")";
-	}
+        for (Ship ship: ships) {
+            if (isValidPlacement(ship, board)) {
+                place(ship, board);
+            }
+            else {
+                return false;
+            }
+        }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Ship other = (Ship) obj;
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		return true;
-	}
-	
+    public static boolean isValidPlacement(Ship ship, boolean[][] board) {
+        int size = ship.size;
+        String orientation = ship.direction;
+
+        if (ship.xcoordinate < 0 || ship.ycoordinate < 0) {
+            return false;
+        }
+        else if (orientation.equals(HORIZONTAL) && ship.xcoordinate + size > board[0].length ||
+                orientation.equals(VERTICAL) && ship.ycoordinate + size > board.length) {
+            return false;
+        }
+
+        while (size > 0) {
+            int column = ship.xcoordinate;
+            int row = ship.ycoordinate;
+            if (orientation.equals(VERTICAL)) {
+                row += ship.size - size;
+            }
+            else {
+                column += ship.size - size;
+            }
+            if (board[row][column]) {
+                return false;
+            }
+
+            size--;
+        }
+
+        return true;
+    }
+
+    private static void place(Ship ship, boolean[][] board) {
+        int size = ship.size;
+        while (size > 0) {
+            int position = ship.size - size;
+            if (ship.direction.equals(VERTICAL)) {
+                board[ship.ycoordinate + position][ship.xcoordinate] = true;
+            }
+            else {
+                board[ship.ycoordinate][ship.xcoordinate + position] = true;
+            }
+            size--;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return name + ": " +
+                "Start position(" + xcoordinate + "," + ycoordinate + "), " +
+                "Size(" + size + "), " +
+                "Direction(" + direction + ")";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Ship other = (Ship) obj;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+
     //test method
 //    public static void test()
 //    {
