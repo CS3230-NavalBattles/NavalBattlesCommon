@@ -1,6 +1,7 @@
 package Common;
 
 import java.io.Serializable;
+import java.lang.System;
 import java.util.ArrayList;
 
 /**
@@ -46,7 +47,7 @@ public class Ship implements Serializable {
 
     public void setShip()
     {
-        isset = true;
+        isset = !isset;
     }
 
     public void resetShip()
@@ -59,7 +60,7 @@ public class Ship implements Serializable {
     }
 
     private boolean checkOutOfBound(int xcoord, int ycoord) {
-        if (direction == VERTICAL) {
+        if (direction.equals(VERTICAL)) {
             if (ycoord >= 0 && ycoord < 10 - (size - 1)) {
                 return true;
             }
@@ -238,18 +239,43 @@ public class Ship implements Serializable {
 
 
     //test method
-//    public static void test()
-//    {
-//        Ship s = new Ship(4,"Battleship");
-//        s.setLocation(3,3);
-//        System.out.println(s.availhits.toString());
-//        s.hitShip(3, 5);
-//        System.out.println(s.availhits.toString());
-//    }
-//
-//    public static void main(String[] args)
-//    {
-//        test();
-//    }
+    public static void main(String[] args)
+    {
+        ArrayList<Ship> s = new ArrayList<Ship>();
+        s.add(new Ship(2,"Destroyer"));
+        s.add(new Ship(3,"Submarine"));
+        s.add(new Ship(3,"Cruiser"));
+        s.add(new Ship(4, "Battleship"));
+        s.add(new Ship(5, "Aircraft Carrier"));
+
+        System.out.println("Vertical Tests: ");
+        for(int i = 0; i < 10; i++)
+        {
+            for(Ship ship : s)
+            {
+                System.out.println("Setting: " + ship.getName() + " at: " + i + ",9");
+                System.out.println(ship.setLocation(i,9));
+                System.out.println(ship.toString());
+            }
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.println("Horizontal Tests");
+        for(Ship ship:s)
+        {
+            ship.changeDirection();
+        }
+
+        for(int i = 0; i < 10; i++)
+        {
+            for(Ship ship : s)
+            {
+                System.out.println("Setting: " + ship.getName() + " at: 9," + i);
+                System.out.println(ship.setLocation(9,i));
+                System.out.println(ship.toString());
+            }
+        }
+    }
 
 }
